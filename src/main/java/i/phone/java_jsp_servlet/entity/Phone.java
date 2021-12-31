@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class Phone {
 
     @Id(autoIncrement = true)
-    @Column(columnName = "id", columnType = SQLData.INTEGER)
+    @Column(columnName = "id", columnType = SQLDataTypes.INTEGER)
     private int id;
     @Column(columnName = "name", columnType = SQLDataTypes.VARCHAR50)
     private String name;
