@@ -257,14 +257,11 @@ public class JpaRepository<T> {
             if (!isEntity()) {
                 throw new EntityException("Not an entity model check your annotation");
             }
-            //select * from teachers where id = {id}
-            //build sql cmd
             StringBuilder strCmd = new StringBuilder();
             strCmd.append(SQLConstant.SELECT_ASTERISK);
             strCmd.append(SQLConstant.SPACE);
             strCmd.append(SQLConstant.FROM);
             strCmd.append(SQLConstant.SPACE);
-            //get table name
             Entity currentEntity = clazz.getDeclaredAnnotation(Entity.class);
             String tableName = currentEntity.tableName();
             strCmd.append(tableName);
@@ -272,7 +269,6 @@ public class JpaRepository<T> {
             strCmd.append(SQLConstant.WHERE);
             strCmd.append(SQLConstant.SPACE);
 
-            // CHECK IS DELETED
             strCmd.append(SQLConstant.IS_DELETED);
             strCmd.append(SQLConstant.SPACE);
             strCmd.append(SQLConstant.EQUAL);
@@ -282,9 +278,7 @@ public class JpaRepository<T> {
             strCmd.append(SQLConstant.AND);
             strCmd.append(SQLConstant.SPACE);
 
-            //get id column name
             for (Field field : clazz.getDeclaredFields()) {
-                //skip non column
                 if (!field.isAnnotationPresent(Column.class)) {
                     continue;
                 }
@@ -294,7 +288,6 @@ public class JpaRepository<T> {
                     strCmd.append(SQLConstant.SPACE);
                     strCmd.append(SQLConstant.EQUAL);
                     strCmd.append(SQLConstant.SPACE);
-                    //append value depends on value type
                     if (!column.columnType().equals(SQLDataTypes.INTEGER)) {
                         strCmd.append(SQLConstant.APOSTROPHE);
                     }
@@ -322,8 +315,6 @@ public class JpaRepository<T> {
     }
 
     public boolean update(T obj) {
-        //update {table_name} SET column1 = value 1, column2 = value 2 where id = {id}
-        //not allow to update id
         try {
             if (!isEntity()) {
                 throw new EntityException("Not an entity model check your annotation");
@@ -341,7 +332,6 @@ public class JpaRepository<T> {
             stringCmd.append(SQLConstant.SET);
             stringCmd.append(SQLConstant.SPACE);
             Field[] fields = clazz.getDeclaredFields();
-            //id information
             String idName = "";
             String idValue = "";
             String idType = "";
@@ -417,7 +407,6 @@ public class JpaRepository<T> {
     public boolean save(T obj) {
         try {
             if (!isEntity()) {
-                // chủ động quăng lỗi cho hàm gọi đến.
                 throw new EntityException("Not an entity model check your annotation");
             }
             Connection connection = ConnectionHelper.getConnection();
@@ -425,7 +414,6 @@ public class JpaRepository<T> {
                 throw new EntityException("Can not connect to database!");
             }
             Entity currentEntity = (Entity) clazz.getAnnotation(Entity.class);
-            //build sql cmd
             StringBuilder stringCmd = new StringBuilder();
             stringCmd.append(SQLConstant.INSERT_INTO);
             stringCmd.append(SQLConstant.SPACE);
@@ -443,7 +431,6 @@ public class JpaRepository<T> {
                         columnName = currentColumn.columnName();
                     }
                 }
-                //id checker
                 if (field.isAnnotationPresent(Id.class)) {
                     Id currentId = (Id) field.getAnnotation(Id.class);
                     if (currentId.autoIncrement()) {
@@ -478,7 +465,7 @@ public class JpaRepository<T> {
                     Date date = (Date) value;
                     value = ConvertHelper.convertJavaDateToSqlDateTime(date);
                 }
-                //id checker
+                
                 if (field.isAnnotationPresent(Id.class)) {
                     Id currentId = (Id) field.getAnnotation(Id.class);
                     if (currentId.autoIncrement()) {
@@ -515,7 +502,6 @@ public class JpaRepository<T> {
     }
 
     public boolean delete(Object id) {
-        //delete from {tableName} where id = id
         try {
             Connection connection = ConnectionHelper.getConnection();
             if (connection == null) {
@@ -582,8 +568,7 @@ public class JpaRepository<T> {
     }
 
     public List<T> where(Object expr1, String operator, Object expr2) {
-        //SELECT * FROM {tableName} WHERE {expr1} {operator} {expr2}
-        //build sql command
+
         List<T> res = new ArrayList<T>();
         try {
             if (!isEntity()) {
@@ -610,7 +595,6 @@ public class JpaRepository<T> {
             stringCmd.append(SQLConstant.APOSTROPHE);
             stringCmd.append(expr2);
             stringCmd.append(SQLConstant.APOSTROPHE);
-            //execute command
             PreparedStatement preparedStatement = connection.prepareStatement(stringCmd.toString());
             ResultSet resultSet = preparedStatement.executeQuery();
             List<T> fullFiled = fullFillObject(resultSet);

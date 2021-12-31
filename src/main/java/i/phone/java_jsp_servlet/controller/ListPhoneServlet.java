@@ -13,7 +13,7 @@ public class ListPhoneServlet extends HttpServlet {
     private JpaRepository<Phone> phoneJpaRepository = new JpaRepository<>(Phone.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("list", list);
+//        req.setAttribute("list", list);
         req.getRequestDispatcher("/admin/phone/listphone.jsp").forward(req,resp);
     }
 }

@@ -27,7 +27,6 @@ public class CreatePhoneServlet extends HttpServlet {
             Double price = Double.parseDouble(req.getParameter("price"));
             String description = req.getParameter("description");
 
-            // tạo ra đối tượng của lớp category.
             Phone phone = new Phone(name, brand, price, description);
             if (phone.isValid()) {
                 phoneJpaRepository.save(phone);
