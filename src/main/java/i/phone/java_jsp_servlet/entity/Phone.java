@@ -1,21 +1,60 @@
 package i.phone.java_jsp_servlet.entity;
 
+import i.phone.java_jsp_servlet.annotation.Column;
+import i.phone.java_jsp_servlet.annotation.Entity;
+import i.phone.java_jsp_servlet.annotation.Id;
+import i.phone.java_jsp_servlet.util.SQLDataTypes;
+
+import java.util.Date;
+import java.util.HashMap;
+
 public class Phone {
+
+    @Id(autoIncrement = true)
+    @Column(columnName = "id", columnType = SQLData.INTEGER)
     private int id;
+    @Column(columnName = "name", columnType = SQLDataTypes.VARCHAR50)
     private String name;
-    private String Brand;
+    @Column(columnName = "brand", columnType = SQLDataTypes.VARCHAR50)
+    private String brand;
+    @Column(columnName = "price", columnType = SQLDataTypes.DOUBLE)
     private double price;
-    private String Description;
+    @Column(columnName = "description", columnType = SQLDataTypes.VARCHAR255)
+    private String description;
+    @Column(columnName = "edit_date", columnType = SQLDataTypes.DATETIME)
+    private Date editDate;
+    @Column(columnName = "is_deleted", columnType = SQLDataTypes.SMALL_INTEGER)
+    private int isDeleted;
 
     public Phone() {
+        this.name = "";
+        this.brand = "";
+        this.price = 0;
+        this.description = "";
+        this.editDate = new Date();
+        this.isDeleted = 0;
     }
 
-    public Phone(int id, String name, String brand, double price, String description) {
-        this.id = id;
+    public Phone(String name, String brand, double price, String description) {
         this.name = name;
-        Brand = brand;
+        this.brand = brand;
         this.price = price;
-        Description = description;
+        this.description = description;
+        this.editDate = new Date();
+        this.isDeleted = 0;
+    }
+
+    @Override
+    public String toString() {
+        return "Phone{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", brand='" + brand + '\'' +
+                ", price='" + price + '\'' +
+                ", description='" + description + '\'' +
+                ", editDate=" + editDate +
+                ", isDeleted=" + isDeleted +
+                '}';
     }
 
     public int getId() {
@@ -35,11 +74,11 @@ public class Phone {
     }
 
     public String getBrand() {
-        return Brand;
+        return brand;
     }
 
     public void setBrand(String brand) {
-        Brand = brand;
+        this.brand = brand;
     }
 
     public double getPrice() {
@@ -51,10 +90,48 @@ public class Phone {
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
+    }
+
+    public Date getEditDate() {
+        return editDate;
+    }
+
+    public void setEditDate(Date editDate) {
+        this.editDate = editDate;
+    }
+
+    public int getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(int isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+    public boolean isValid() {
+        return getErrors().size() == 0;
+    }
+    public HashMap<String, String> getErrors() {
+        HashMap<String, String> errors = new HashMap<>();
+        if (name == null || name.length() == 0) {
+            errors.put("name", "Name cannot be empty");
+        }
+
+        if (brand == null || brand.length() == 0 || brand.equalsIgnoreCase("Please select one of the follow brand")) {
+            errors.put("brand", "Please select a brand");
+        }
+
+        if (price <= 0) {
+            errors.put("price", "Price cannot be negative or equals to zero.");
+        }
+
+        if (description == null || name.length() == 0) {
+            errors.put("description", "Description cannot be empty.");
+        }
+        return errors;
     }
 }
