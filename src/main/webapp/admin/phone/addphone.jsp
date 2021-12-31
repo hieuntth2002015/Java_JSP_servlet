@@ -39,6 +39,10 @@
                 <input class="w3-input" type="text" name="name">
             </div>
             <div class="w3-margin">
+                <label>Brand</label>
+                <input class="w3-input" type="text" name="brand">
+            </div>
+            <div class="w3-margin">
                 <label>Price</label>
                 <input class="w3-input" type="text" name="price">
             </div>
