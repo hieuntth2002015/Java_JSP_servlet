@@ -46,14 +46,6 @@
                 <label>Description</label>
                 <input class="w3-input" type="number" name="description">
             </div>
-            <div class="w3-margin">
-                <label>Thumbnail</label>
-                <input class="w3-input" type="url" name="thumbnail">
-            </div>
-            <div class="w3-margin">
-                <label>Status</label>
-                <input class="w3-input" type="number" name="status">
-            </div>
             <button class="w3-btn w3-blue w3-margin">Submit</button>
         </form>
     </div>

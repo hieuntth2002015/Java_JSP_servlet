@@ -49,11 +49,6 @@
                     <th><%=list.get(i).getName()%></th>
                     <th><%=list.get(i).getPrice()%></th>
                     <th><%=list.get(i).getDescription()%></th>
-                    <th>
-                        <a href="/admin/phone/detail?id=<%=list.get(i).getId()%>">Detail</a>&nbsp;
-                        <a href="/admin/phone/edit?id=">Edit</a>&nbsp;
-                        <a href="/admin/phone/delete?id=">Delete</a>
-                    </th>
                 </tr>
             <%
                 }
